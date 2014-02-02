@@ -1,0 +1,99 @@
+TweetDependenciesBot-1.00
+
+Piotr Majcherczyk
+
+1. Wymagania
+
+Do działania programu wymagane jest JRE.
+Program został napisany z pomocą OpenJDK iced-tea i zakłada istnienie aktywnego
+serwera MySQL na localhoście.
+Zależności są realizowane z pomocą Maven2.
+Wykorzystywane są biblioteki:
+-Twitter4J - do komunikacji z Twitterem
+-mysql-connector - sterowniki do bazy danych.
+
+2. Kompilacja
+
+Po rozpakowaniu archiwum należy wejść do głównego katalogu
+(TweetDependenciesBot) i uruchomić skrypt kompilujący (compile.sh). Maven powinien
+automatycznie ściągnąć zależności i utworzyć plik TweetDependenciesBot-1.0.jar.
+
+3. Uruchamianie
+
+Jeśli program jest uruchamiany po raz pierwszy, należy najpier udostępnić
+aplikacji działanie na profilu użytkownika na Twitterze. Realizuje się to przy
+pomocy skryptu logger.sh.
+Użytkownik zostanie zapytany o klucze (consumerKey, consumerSecret) a następnie
+otrzyma link do PINu, który należy wpisać. Wszystkie te klucze zostaną zapisane
+w pliku twitter4j.properties.
+
+Aby uruchomić właściwy program należy skorzystać ze skryptu run.sh.
+Program zapyta użytkownika o login i hasło do bazy danych MySQL na localhoście.
+Jeśli jest to pierwsze uruchomienie, utworzona zostanie baza danych o nazwie
+tdbdb (jeśli taka baza już istnieje, zostanie zgłoszony wyjątek), po czym
+program zakończy się.
+Deklaracja bazy danych znajduje się w pliku tdbdb.sql.
+
+4. Działanie
+
+Ogólny przebieg
+Całe działanie opiera się na bazie osobowości przechowywanej w bazie danych.
+Na początku program wyciąga osobowości z bazy. Nawiązane jest połączenie z
+Twitterem. Następuje sprawdzenie, aktualności ostatnich stworzonych przez te
+osobowości tweetów - jeśli przybyło ich dostatecznie wiele, następuje
+modyfikacja bazy. Najgorsza osobowość zostaje z bazy wyrzucona i zastąpiona
+przez nowego kandydata.
+
+Sprawdzenie aktualności (różnica synchronizacji)
+W bazie danych przechowywane są tweety stworzone przez osobowości w czasie,
+gdy te się w tej bazie znajdowały. W czasie synchronizacji znajdowane są
+najnowsze tweety danej osobowości z Twittera i jeśli któregoś nie ma w bazie,
+jest on wstawiany do bazy i retweetowany. Liczba takich tweetów to różnica
+synchronizacji.
+
+Modyfikacja bazy
+Jeśli różnica synchronizacji przekroczy odpowiednią stałą, lub jeśli uległa
+zmianie wielkość bazy osobowości (również zapisana w postaci pewnej stałej)
+- w szczególności przy pierwszym uruchomieniu, gdy nie ma żadnej osobowości
+w bazie - następuje modyfikacja.
+Najgorsza osobowość jest wyrzucana z bazy, a następnie przydzielane jest tyle
+nowych osobowości, aby "dopełnić" bazę do maksymalnej wielkości.
+Wybierane są najlepsze osobowości spośród znalezionych kandydatów.
+Jeśli nie ma dostatecznie dużej liczby kandydatów, osobowości są wybierane
+losowo za pomocą mechanizmu Query: generowana jest liczba z przedziału
+[1, 50000] i wstawiana do wyszukiwarki Twittera. Autorzy tweetów, które są
+wynikiem wyszukiwania stają się kandydatami.
+
+Wartość osobowości
+Niech rt(t) oznacza liczbę retweetów tweetu t.
+Rt(t) będzie oznaczać liczbę retweetów tweetu t, ale pochodzących jedynie od
+osobowości znajdujących się w bazie.
+Wartość osobowości jest obliczana na podstawie wzoru:
+suma po wszystkich zanotowanych tweetach: a * rt(t) + b * Rt(t)
+gdzie a i b są wybranymi stałymi rzeczywistymi.
+
+5. Uwagi
+
+W wersji 1.0 programu po wyborze nowej osobowości jej tweety/retweety nie są
+dodawane do bazy. Dzięki temu praktycznie zawsze różnica synchronizacji
+przekroczy dozwolony poziom i nastąpi modyfikacja bazy. To znacznie ułatwia
+testowanie programu, ponieważ nie trzeba czekać na aktywność osobowości w
+bazie. Nie jest to jednak dokładnie poprawne działanie.
+
+Teoretycznie losowy sposób wyszukiwania nowych kandydatów może spowodować
+"wyczerpanie" zasobów kandydatów (jest to praktycznie niemożliwe, ale cóż).
+Jeśli taka sytuacja zajdzie, baza osobowości zostaje wyczyszczona.
+
+Skrypt logger.sh należy uruchamiać z poziomu konsoli, natomiast run.sh już
+tego nie wymaga.
+
+6. Przyszłość
+
+Niniejsza aplikacja jest w wielu aspektach niedopracowana - jej możliwości
+ograniczone są przez czas wykonania, API Twittera i początkowe zamierzenia.
+Ułatwieniu powinien ulec sposób korzystania z bazy danych - login i hasło
+powinno być gdzieś przechowywane, aktualnie uzytkownik musi je wpisywać za
+każdym razem (KWallet?).
+Ponadto sposób działania aplikacji sugeruje wsparcie ze strony narzędzia cron
+- aplikacja powinna regularnie aktualizować profil (obecnie to użytkownik
+ręcznie uruchamia program).
