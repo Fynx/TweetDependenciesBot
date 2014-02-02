@@ -9,79 +9,71 @@
     <version>1.0</version>
 
     <repositories>
-
         <repository>
             <id>twitter4j.org</id>
             <name>twitter4j.org Repository</name>
             <url>http://twitter4j.org/maven2</url>
         </repository>
-
         <repository>
             <id>scribe.org</id>
             <name>scribe.org Repository</name>
             <url>http://mvnrepository.com/artifact/maven2</url>
         </repository>
-
     </repositories>
 
-    <dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <!-- nothing here -->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2-beta-4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>tweetdependenciesbot.MainClass</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
+    <dependencies>
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
             <version>[3.0,)</version>
         </dependency>
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.6</version>
-            <scope>runtime</scope>
         </dependency>
-
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.dstovall</groupId>
-                <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.4</version>
-                <executions>
-                    <execution>
-                        <id>TweetDependenciesBot</id>
-                        <configuration>
-                            <mainClass>tweetdependenciesbot.MainClass</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>TweetDependenciesBot-1.0.jar</filename>
-                        </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>TwitterLogger</id>
-                        <configuration>
-                            <mainClass>twitterlogger.Logger</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>Logger.jar</filename>
-                        </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>

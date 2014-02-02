@@ -8,22 +8,15 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class Logger
 {
-	private static String CONSUMER_KEY;
-	private static String CONSUMER_SECRET;
+	private final String CONSUMER_KEY        = "1PTRNmiQB5FfkKZqSOjNTA";
+	private final String CONSUMER_SECRET     = "mXfrYqNUZazOp8ugZAHgiCOlMMKxwMuN1hiJFPncWI";
 
 	/** This function uses the example from the web. To be more specific: exactly everywhere the same one. */
-	public static void main(String argv[]) throws TwitterException, IOException
+	public void log() throws TwitterException, IOException
 	{
-		System.out.println("Enter consumer key:");
-		Scanner in = new Scanner(System.in);
-		CONSUMER_KEY = in.nextLine();
-		System.out.println("Enter consumer secret:");
-		CONSUMER_SECRET = in.nextLine();
-
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
 			.setOAuthConsumerKey(CONSUMER_KEY)
@@ -75,5 +68,5 @@ public class Logger
 		System.out.println("Properties saved.");
 	}
 
-	private static Twitter twitter;
+	private Twitter twitter;
 }

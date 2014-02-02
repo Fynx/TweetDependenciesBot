@@ -13,11 +13,7 @@ public class TwitterInterfaceImpl implements TwitterInterface
 
 	public TwitterInterfaceImpl() throws TwitterException, IOException
 	{
-		System.out.println("Logging to Twitter");
-
 		twitter = TwitterFactory.getSingleton();
-
-		System.out.println("Logged!");
 	}
 
 	private ResponseList<Status> currentResponseList;

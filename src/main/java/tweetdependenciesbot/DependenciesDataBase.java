@@ -181,7 +181,7 @@ public class DependenciesDataBase extends DependenciesBase
 		ResultSet tcnt  = dataBase.query("SELECT receiver FROM Retweet WHERE sender = " + id.getId());
 
 		while (tcnt.next()) {
-			long rid = tweets.getLong(1);
+			long rid = tcnt.getLong(1);
 			if (getIdentitiesInBase().contains(new Identity(rid)))
 				++localValue;
 		}

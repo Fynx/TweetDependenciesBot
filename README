@@ -23,9 +23,11 @@ automatycznie ściągnąć zależności i utworzyć plik TweetDependenciesBot-1.
 Jeśli program jest uruchamiany po raz pierwszy, należy najpier udostępnić
 aplikacji działanie na profilu użytkownika na Twitterze. Realizuje się to przy
 pomocy skryptu logger.sh.
-Użytkownik zostanie zapytany o klucze (consumerKey, consumerSecret) a następnie
-otrzyma link do PINu, który należy wpisać. Wszystkie te klucze zostaną zapisane
-w pliku twitter4j.properties.
+Użytkownik otrzyma link do PINu, który należy wpisać. Wszystkie klucze zostaną
+zapisane w pliku twitter4j.properties (chociaż consumerKey i consumerSecret są
+na twardo zakodowane w programie).
+Jeśli ta sama instancja programu ma zmienić uzytkownika, do którego ma mieć
+dostęp, należy usunąć plik twitter4j.properties i ponownie uruchomić logger.sh.
 
 Aby uruchomić właściwy program należy skorzystać ze skryptu run.sh.
 Program zapyta użytkownika o login i hasło do bazy danych MySQL na localhoście.
@@ -75,10 +77,10 @@ gdzie a i b są wybranymi stałymi rzeczywistymi.
 5. Uwagi
 
 W wersji 1.0 programu po wyborze nowej osobowości jej tweety/retweety nie są
-dodawane do bazy. Dzięki temu praktycznie zawsze różnica synchronizacji
-przekroczy dozwolony poziom i nastąpi modyfikacja bazy. To znacznie ułatwia
-testowanie programu, ponieważ nie trzeba czekać na aktywność osobowości w
-bazie. Nie jest to jednak dokładnie poprawne działanie.
+dodawane do bazy. Dzięki temu czesto różnica synchronizacji przekroczy
+dozwolony poziom i nastąpi modyfikacja bazy. To znacznie ułatwia testowanie
+programu, ponieważ nie trzeba czekać na aktywność osobowości w bazie. Nie jest
+to jednak dokładnie poprawne działanie.
 
 Teoretycznie losowy sposób wyszukiwania nowych kandydatów może spowodować
 "wyczerpanie" zasobów kandydatów (jest to praktycznie niemożliwe, ale cóż).

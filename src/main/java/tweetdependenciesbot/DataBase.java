@@ -53,7 +53,6 @@ public class DataBase
 	/** Opens the connection with the database. */
 	public void open() throws SQLException
 	{
-		System.out.println("Checking connection with database");
 		con = getConnection(DB_URL, user, password);
 		stmt = con.createStatement();
 	}
@@ -61,7 +60,6 @@ public class DataBase
 	/** Must be called before the end of the program. */
 	public void close() throws SQLException
 	{
-		System.out.println("Closing the connection with database");
 		stmt.close();
 		con.close();
 	}
