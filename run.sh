@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -cp target/TweetDependenciesBot-1.0.jar tweetdependenciesbot.MainClass
+java -jar target/TweetDependenciesBot-1.0.jar
