@@ -8,14 +8,14 @@ CREATE TABLE Identity (
 	iid BIGINT NOT NULL,
 	nick VARCHAR(25),
 	PRIMARY KEY (iid)
-) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE Tweet (
 	tid BIGINT NOT NULL,
 	sender BIGINT,
 	text VARCHAR(150),
 	PRIMARY KEY (tid)
-) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE Retweet (
 	tid BIGINT NOT NULL,
