@@ -16,8 +16,6 @@ public interface TwitterInterface
 	public abstract Identity getRetweeter(Tweet t) throws TwitterException;
 	/** Returns the total number of retweets for the tweet. */
 	public abstract int getRetweetsNumber(Tweet t) throws TwitterException;
-	/** Returns the Identity for with the given id. */
-	public Identity getIdentity(long iid) throws TwitterException;
 	/** Returns random identities. */
 	public ArrayList<Identity> getRandomIdentities(int number) throws TwitterException;
 

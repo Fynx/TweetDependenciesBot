@@ -87,6 +87,13 @@ Jeśli taka sytuacja zajdzie, baza osobowości zostaje wyczyszczona.
 Skrypt logger.sh należy uruchamiać z poziomu konsoli, natomiast run.sh już
 tego nie wymaga.
 
+Ze względu na ograniczenia danych przesyłanych przez Twittera
+(https://dev.twitter.com/docs/rate-limiting/1.1) aplikacji nie powinno się
+uruchamiać więcej niż kilka razy w ciągu piętnastominutowego segmentu.
+Jest to zależne od wielkości bazy osobowości ustalanej przez stałą.
+Jeśli limit zostanie przekroczony, program słusznie rzuci wyjątkiem i zakończy
+się.
+
 6. Przyszłość
 
 Niniejsza aplikacja jest w wielu aspektach niedopracowana - jej możliwości
@@ -94,6 +101,10 @@ ograniczone są przez czas wykonania, API Twittera i początkowe zamierzenia.
 Ułatwieniu powinien ulec sposób korzystania z bazy danych - login i hasło
 powinno być gdzieś przechowywane, aktualnie uzytkownik musi je wpisywać za
 każdym razem (KWallet?).
+
 Ponadto sposób działania aplikacji sugeruje wsparcie ze strony narzędzia cron
 - aplikacja powinna regularnie aktualizować profil (obecnie to użytkownik
 ręcznie uruchamia program).
+
+W celach badawczych wiele stałych zakodowanych w programie mogłyby być czytane
+z odpowiedniego pliku konfiguracyjnego.

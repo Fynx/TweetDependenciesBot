@@ -26,11 +26,11 @@ public class MainClass
 
 		System.out.println("Synchronizing...");
 		dataBase.synchronize(twitter);
-		System.out.println(String.format("done. (synchronization difference: %d)",
+		System.out.println(String.format("done. (synchronization difference: %d)\n",
 		                                 dataBase.getSynchronizationDifference()));
 		System.out.println("Updating...");
 		dataBase.update(twitter);
-		System.out.println("done.");
+		System.out.println("done.\n");
 
 		System.out.println("Closing database.");
 		dataBase.close();

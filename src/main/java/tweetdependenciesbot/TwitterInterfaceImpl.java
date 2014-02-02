@@ -1,13 +1,8 @@
 package tweetdependenciesbot;
 
 import twitter4j.*;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
-import twitter4j.conf.ConfigurationBuilder;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -37,6 +32,15 @@ public class TwitterInterfaceImpl implements TwitterInterface
 		return currentResponseList;
 	}
 
+	private String getTrimmedString(String s)
+	{
+		char cs[] = s.toCharArray();
+		for (int i = 0; i < cs.length; ++i)
+			if (cs[i] == '\'' || cs[i] == '\"')
+				cs[i] = '.';
+		return new String(cs);
+	}
+
 	/** Returns only up to 20 most recent tweets. */
 	@Override
 	public ArrayList<Tweet> getTweets(Identity id, int number) throws TwitterException
@@ -46,7 +50,7 @@ public class TwitterInterfaceImpl implements TwitterInterface
 
 		for (Status s : res)
 			if (!s.isRetweet() && tweets.size() < number)
-				tweets.add(new Tweet(s.getId(), id.getId(), s.getText()));
+				tweets.add(new Tweet(s.getId(), id.getId(), getTrimmedString(s.getText())));
 
 		return tweets;
 	}
@@ -84,13 +88,6 @@ public class TwitterInterfaceImpl implements TwitterInterface
 	public int getRetweetsNumber(Tweet t) throws TwitterException
 	{
 		return twitter.showStatus(t.getId()).getRetweetCount();
-	}
-
-	@Override
-	public Identity getIdentity(long iid) throws TwitterException
-	{
-		User u = twitter.showUser(iid);
-		return new Identity(iid, u.getName());
 	}
 
 	@Override

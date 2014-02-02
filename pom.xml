@@ -41,4 +41,47 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.dstovall</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.4</version>
+                <executions>
+                    <execution>
+                        <id>TweetDependenciesBot</id>
+                        <configuration>
+                            <mainClass>tweetdependenciesbot.MainClass</mainClass>
+                            <attachToBuild>true</attachToBuild>
+                            <classifier>onejar</classifier>
+                            <filename>TweetDependenciesBot-1.0.jar</filename>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>TwitterLogger</id>
+                        <configuration>
+                            <mainClass>twitterlogger.Logger</mainClass>
+                            <attachToBuild>true</attachToBuild>
+                            <classifier>onejar</classifier>
+                            <filename>Logger.jar</filename>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>

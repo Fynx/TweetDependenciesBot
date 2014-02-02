@@ -29,11 +29,8 @@ public class DependenciesDataBase extends DependenciesBase
 			dataBase.query("SELECT Base.iid, nick FROM Base JOIN Identity ON Base.iid = Identity.iid");
 		ArrayList<Identity> ids = new ArrayList<Identity>();
 
-		while (res.next()) {
+		while (res.next())
 			ids.add(new Identity(res.getLong(1), res.getString(2)));
-			System.out.println(String.format("Identity in base: %d - %s",
-			                                 res.getLong(1), res.getString(2)));
-		}
 
 		return ids;
 	}
@@ -77,7 +74,6 @@ public class DependenciesDataBase extends DependenciesBase
 			ArrayList<Tweet> newts = twitter.getTweets(id, TWEETS_MEMORY_SIZE);
 			ArrayList<Tweet> newrts = twitter.getRetweets(id, TWEETS_MEMORY_SIZE);
 
-			System.out.println("Fetched tweets:");
 			for (Tweet t : newts)
 				System.out.println(String.valueOf(t.getSender()) + ": " + t.getText());
 			System.out.println();
@@ -95,7 +91,7 @@ public class DependenciesDataBase extends DependenciesBase
 						.format("INSERT INTO Tweet (tid, sender, text) VALUES (%d, %d, '%s')",
 						        newt.getId(),
 						        newt.getSender(),
-						        newt.getText()));
+						        getTrimmedString(newt.getText())));
 					++synchronizationDifference;
 				}
 			}
@@ -137,6 +133,7 @@ public class DependenciesDataBase extends DependenciesBase
 		if (ids.size() == NAMES_IN_BASE_NUMBER && getSynchronizationDifference() > TWEET_UPDATE_COUNT) {
 			synchronizationDifference = 0;
 			removeIdentityFromTheBase(getWorstIdentity(twitter));
+			ids = getIdentitiesInBase();
 		}
 
 		candidates = new ArrayList<Identity>();
@@ -237,10 +234,6 @@ public class DependenciesDataBase extends DependenciesBase
 			}
 		}
 
-		System.out.println("Candidates found:");
-		for (Identity cand : candidates)
-			System.out.println(cand.getId() + ": " + cand.getName());
-
 		if (candidates.isEmpty())
 			throw new CandidatesExploitedException();
 
@@ -252,7 +245,7 @@ public class DependenciesDataBase extends DependenciesBase
 		for (Identity cand : candidates) {
 			if (cand.equals(id))
 				idOccurred = true;
-			else if (idOccurred)
+			else if (idOccurred && cand != null)
 				return cand;
 		}
 		throw new CandidatesExploitedException();
@@ -263,7 +256,7 @@ public class DependenciesDataBase extends DependenciesBase
 	{
 		System.out.println("Adding identity " + id.getName());
 		dataBase.insert(String.format("INSERT INTO Identity (iid, nick) VALUES (%d, '%s')",
-		                              id.getId(), id.getName()));
+		                              id.getId(), getTrimmedString(id.getName())));
 		dataBase.insert(String.format("INSERT INTO Base (iid) VALUES (%d)", id.getId()));
 	}
 
@@ -292,6 +285,15 @@ public class DependenciesDataBase extends DependenciesBase
 	public int getSynchronizationDifference()
 	{
 		return synchronizationDifference;
+	}
+
+	private String getTrimmedString(String s)
+	{
+		char cs[] = s.toCharArray();
+		for (int i = 0; i < cs.length; ++i)
+			if (cs[i] == '\'' || cs[i] == '\"')
+				cs[i] = '.';
+		return new String(cs);
 	}
 
 	/** Exceptions */
